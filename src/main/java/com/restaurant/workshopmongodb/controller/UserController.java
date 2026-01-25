@@ -1,10 +1,12 @@
 package com.restaurant.workshopmongodb.controller;
 
 import com.restaurant.workshopmongodb.models.User;
+import com.restaurant.workshopmongodb.record.UserRecord;
 import com.restaurant.workshopmongodb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +22,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserRecord>> findAll() {
         return ResponseEntity.ok().body(userService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserRecord> findById(@PathVariable String id){
+        return ResponseEntity.ok().body(userService.findById(id));
     }
 
 }
