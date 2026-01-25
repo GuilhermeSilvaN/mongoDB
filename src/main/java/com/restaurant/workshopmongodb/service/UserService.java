@@ -6,6 +6,7 @@ import com.restaurant.workshopmongodb.repositories.userRepository;
 import com.restaurant.workshopmongodb.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,5 +35,21 @@ public class UserService {
          } else{
              throw new ObjectNotFoundException("User not found");
          }
+    }
+
+    public UserRecord insert(UserRecord dto){
+        if(dto.username() == null || dto.username().isBlank()){
+            throw new IllegalArgumentException("Username is required");
+        }
+        if(userRepository.existsByemail(dto.email())){
+            throw new IllegalArgumentException("Email is already exists");
+        }
+
+        User userSave = new User();
+        userSave.setUsername(dto.username());
+        userSave.setEmail(dto.email());
+
+        //userRepository.save(userSave) returns the persisted User entity, used to build the UserRecord DTO.
+        return new UserRecord(userRepository.save(userSave));
     }
 }
