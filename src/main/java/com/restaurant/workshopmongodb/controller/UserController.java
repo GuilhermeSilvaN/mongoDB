@@ -1,6 +1,5 @@
 package com.restaurant.workshopmongodb.controller;
 
-import com.restaurant.workshopmongodb.models.User;
 import com.restaurant.workshopmongodb.record.UserRecord;
 import com.restaurant.workshopmongodb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -40,6 +37,18 @@ public class UserController {
                 .buildAndExpand(userDTO.id())
                 .toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id){
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserRecord> update(@PathVariable String id, @Validated @RequestBody UserRecord userRecord){
+        UserRecord userDTO = userService.update(id, userRecord);
+        return ResponseEntity.noContent().build();
     }
 
 

@@ -2,11 +2,10 @@ package com.restaurant.workshopmongodb.service;
 
 import com.restaurant.workshopmongodb.models.User;
 import com.restaurant.workshopmongodb.record.UserRecord;
-import com.restaurant.workshopmongodb.repositories.userRepository;
+import com.restaurant.workshopmongodb.repositories.UserRepository;
 import com.restaurant.workshopmongodb.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     @Autowired
-    private userRepository userRepository;
+    private UserRepository userRepository;
 
     // Retrieves all users from the database and returns them as DTOs.
     public List<UserRecord> findAll(){
@@ -51,5 +50,36 @@ public class UserService {
 
         //userRepository.save(userSave) returns the persisted User entity, used to build the UserRecord DTO.
         return new UserRecord(userRepository.save(userSave));
+    }
+
+    public void delete(String id){
+        if(userRepository.existsById(id)){
+            userRepository.deleteById(id);
+        } else{
+            throw new ObjectNotFoundException("User not found");
+        }
+    }
+
+    public UserRecord update(String id, UserRecord dto){
+
+        if(dto.username() == null || dto.username().isBlank()){
+            throw new IllegalArgumentException("Username is required");
+        }
+        if(dto.email() == null || dto.email().isBlank()){
+            throw new IllegalArgumentException("Email is required");
+        }
+
+        if(userRepository.existsById(id)){
+            User user = new User();
+            user.setUsername(dto.username());
+            user.setEmail(dto.email());
+
+            userRepository.save(user);
+
+            return new UserRecord(user);
+
+        } else{
+            throw new ObjectNotFoundException("User not found");
+        }
     }
 }
