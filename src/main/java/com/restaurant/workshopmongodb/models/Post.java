@@ -1,5 +1,6 @@
 package com.restaurant.workshopmongodb.models;
 
+import com.restaurant.workshopmongodb.record.AuthorDTO;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,6 +25,6 @@ public class Post implements Serializable {
     private String title;;
     private String description;
 
-    private User author;
+    private AuthorDTO author;
 
 }
