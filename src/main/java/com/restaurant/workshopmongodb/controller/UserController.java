@@ -1,5 +1,6 @@
 package com.restaurant.workshopmongodb.controller;
 
+import com.restaurant.workshopmongodb.models.Post;
 import com.restaurant.workshopmongodb.record.UserRecord;
 import com.restaurant.workshopmongodb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,12 @@ public class UserController {
     public ResponseEntity<UserRecord> update(@PathVariable String id, @Validated @RequestBody UserRecord userRecord){
         UserRecord userDTO = userService.update(id, userRecord);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id){
+        List<Post> posts = userService.findAllPosts(id);
+        return ResponseEntity.ok().body(posts);
     }
 
 

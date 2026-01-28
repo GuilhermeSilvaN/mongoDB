@@ -1,5 +1,6 @@
 package com.restaurant.workshopmongodb.service;
 
+import com.restaurant.workshopmongodb.models.Post;
 import com.restaurant.workshopmongodb.models.User;
 import com.restaurant.workshopmongodb.record.UserRecord;
 import com.restaurant.workshopmongodb.repositories.UserRepository;
@@ -78,6 +79,16 @@ public class UserService {
 
             return new UserRecord(user);
 
+        } else{
+            throw new ObjectNotFoundException("User not found");
+        }
+    }
+
+    public List<Post> findAllPosts(String id){
+        if(userRepository.existsById(id)){
+            User user = userRepository.findById(id).get();
+
+            return user.getPosts();
         } else{
             throw new ObjectNotFoundException("User not found");
         }
