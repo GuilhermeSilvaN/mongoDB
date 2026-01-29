@@ -26,4 +26,9 @@ public class PostService {
         }
     }
 
+    public List<PostDTO> findByTitle(String title){
+        List<Post> posts = postRepository.searchTitle(title);
+        return posts.stream().map(PostDTO::new).collect(Collectors.toList());
+    }
+
 }
